@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { Dropdown, Input, type MenuProps } from "antd";
 import { ChevronDown, Search } from "lucide-react";
 // import {} from ""
@@ -42,6 +42,7 @@ const TVShowsItems: MenuProps["items"] = [
 ];
 
 const Navbar = () => {
+  const router = useNavigate();
   return (
     <nav className="flex items-center justify-between p-4 bg-foreground fixed top-0 w-full z-10">
       <div className="text-lg font-bold w-50">TMDB</div>
@@ -63,11 +64,24 @@ const Navbar = () => {
           </button>
         </Dropdown>
       </div>
-      <Input
-        placeholder="Search"
-        suffix={<Search className="text-gray-500" />}
-        style={{ width: 200, border: "var(--color-gray-500) solid 2px" }}
-      />
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (!e.currentTarget.search.value) return;
+          router(`/search?query=${e.currentTarget.search.value}`);
+        }}
+      >
+        <Input
+          placeholder="Search"
+          name="search"
+          suffix={
+            <button type="submit" className="cursor-pointer">
+              <Search className="text-gray-500" />
+            </button>
+          }
+          style={{ width: 200, border: "var(--color-gray-500) solid 2px" }}
+        />
+      </form>
     </nav>
   );
 };
