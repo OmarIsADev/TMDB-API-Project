@@ -9,6 +9,8 @@ import {
 
 import type { Route } from "./+types/root";
 import "./app.css";
+import Navbar from "./components/navbar";
+import { ConfigProvider, theme } from "antd";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -33,9 +35,23 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        {children}
-        <ScrollRestoration />
-        <Scripts />
+        <ConfigProvider
+          theme={{
+            token: {
+              colorPrimary: "var(--color-primary)",
+              colorText: "var(--color-text)",
+              colorBgContainer: "var(--color-foreground)",
+              colorBgElevated: "var(--color-foreground-primary)",
+              fontFamily: "Inter, sans-serif",
+            },
+            algorithm: theme.darkAlgorithm
+          }}
+        >
+          <Navbar />
+          {children}
+          <ScrollRestoration />
+          <Scripts />
+        </ConfigProvider>
       </body>
     </html>
   );
